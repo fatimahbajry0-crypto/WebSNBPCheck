@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SNBP CHECK</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f8fc;
+      color: #20334b;
+    }
+
+    header {
+      background: linear-gradient(120deg, #15385e, #327db6);
+      color: white;
+      padding: 22px 7%;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .menu button {
+      background: transparent;
+      border: 1px solid #ffffff70;
+      color: white;
+      padding: 9px 13px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .menu button.active,
+    .menu button:hover {
+      background: white;
+      color: #15385e;
+    }
+
+    .hero {
+      padding: 65px 0 55px;
+      max-width: 750px;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.2;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      color: #dcecff;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 1150px;
+      margin: 35px auto;
+      padding: 0 18px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    h2 {
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #78899d;
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+
+    .card,
+    .panel {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid #e3eaf1;
+      box-shadow: 0 5px 20px #193e5b08;
+    }
+
+    .number {
+      font-size: 34px;
+      font-weight: 800;
+      color: #286ba4;
+    }
+
+    .small {
+      font-size: 12px;
+      color: #8090a2;
+    }
+
+    .panel {
+      margin-bottom: 20px;
+    }
+
+    .panel h3 {
+      margin-bottom: 16px;
+      font-size: 17px;
+    }
+
+    .bar {
+      display: grid;
+      grid-template-columns: 60px 1fr 35px;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+
+    .track {
+      height: 12px;
+      background: #e8eff5;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      background: #347db7;
+      border-radius: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd8e3;
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 13px;
+      background: white;
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid #b5d9f5;
+      border-color: #327db6;
+    }
+
+    .btn {
+      border: none;
+      background: #1d5485;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 9px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #327db6;
+    }
+
+    .result {
+      display: none;
+      background: #edf5fc;
+      border: 1px solid #d4e6f5;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .result h3 {
+      color: #1d5485;
+      margin-bottom: 12px;
+    }
+
+    .average {
+      font-size: 38px;
+      font-weight: 800;
+      color: #1d5485;
+    }
+
+    .campus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+    }
+
+    .campus-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #e2eaf1;
+    }
+
+    .campus-photo {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      background: #dceaf7;
+    }
+
+    .photo-placeholder {
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(130deg, #dceaf7, #a9c9e5);
+      color: #1d5485;
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .campus-info {
+      padding: 16px;
+    }
+
+    .campus-info h3 {
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .campus-info p {
+      font-size: 12px;
+      color: #718197;
+      margin-bottom: 8px;
+    }
+
+    .campus-info a {
+      color: #286ba4;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #e5edf4;
+      text-align: left;
+    }
+
+    th {
+      background: #edf4fa;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .note {
+      font-size: 11px;
+      color: #78899d;
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+
+    .loading {
+      color: #286ba4;
+      font-size: 13px;
+      margin: 10px 0;
+    }
+
+    footer {
+      background: #15385e;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      font-size: 12px;
+      margin-top: 45px;
+    }
+
+    @media(max-width: 650px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding: 45px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <div class="logo">🎓 SNBP CHECK</div>
+
+    <div class="menu">
+      <button class="active" onclick="showPage('home',this)">Beranda</button>
+      <button onclick="showPage('cek',this)">Cek Peluang</button>
+      <button onclick="showPage('alumni',this)">Data Alumni</button>
+      <button onclick="showPage('kampus',this)">Explore PTN</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Kenali Peluangmu,<br>Raih Kampus Impianmu.</h1>
+    <p>
+      Platform informasi SNBP untuk membantu siswa mengenali
+      potensi akademik, melihat data alumni, dan menemukan
+      perguruan tinggi negeri impian.
+    </p>
+  </div>
+</header>
+
+<main>
+
+  <!-- BERANDA -->
+  <section id="home" class="page active">
+
+    <h2>Dashboard SNBP</h2>
+    <p class="subtitle">
+      Data penerimaan alumni SMAN 1 Purwakarta tahun 2024–2026.
+    </p>
+
+    <div class="stats">
+      <div class="card">
+        <div class="number" id="total2024">30</div>
+        <div class="small">Alumni diterima 2024</div>
+      </div>
+
+      <div class="card">
+        <div class="number" id="total2025">32</div>
+        <div class="small">Alumni diterima 2025</div>
+      </div>
+
+      <div class="card">
+        <div class="number" id="total2026">20</div>
+        <div class="small">Alumni diterima 2026</div>
+      </div>
+
+      <div class="card">
+        <div class="number" id="totalSemua">82</div>
+        <div class="small">Total penerimaan</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Grafik Penerimaan Alumni</h3>
+
+      <div class="bar">
+        <span>2024</span>
+        <div class="track"><div class="fill" style="width:93.75%"></div></div>
+        <b>30</b>
+      </div>
+
+      <div class="bar">
+        <span>2025</span>
+        <div class="track"><div class="fill" style="width:100%"></div></div>
+        <b>32</b>
+      </div>
+
+      <div class="bar">
+        <span>2026</span>
+        <div class="track"><div class="fill" style="width:62.5%"></div></div>
+        <b>20</b>
+      </div>
+
+      <p class="note">
+        Data merupakan jumlah siswa diterima berdasarkan file alumni
+        yang tersedia, bukan jumlah seluruh siswa eligible.
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>Selamat Datang di SNBP CHECK!</h3>
+      <p>
+        Gunakan website ini untuk melihat rekap alumni,
+        melakukan simulasi nilai rapor, dan mengenal berbagai PTN.
+        Hasil simulasi bukan jaminan kelulusan SNBP.
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- CEK PELUANG -->
+  <section id="cek" class="page">
+
+    <h2>Cek Peluang SNBP</h2>
+    <p class="subtitle">
+      Lengkapi nilai rapor semester 1 sampai 5.
+    </p>
+
+    <div class="panel">
+
+      <form id="formSNBP">
+
+        <h3>Data Akademik</h3>
+
+        <div class="form-grid">
+
+          <div class="field">
+            <label>Tahun seleksi</label>
+            <select id="tahun">
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+              <option value="2029">2029</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Nama sekolah</label>
+            <input value="SMAN 1 Purwakarta" readonly>
+          </div>
+
+          <div class="field">
+            <label>Nilai semester 1</label>
+            <input type="number" id="s1" min="0" max="100" step="0.01" required>
+          </div>
+
+          <div class="field">
+            <label>Nilai semester 2</label>
+            <input type="number" id="s2" min="0" max="100" step="0.01" required>
+          </div>
+
+          <div class="field">
+            <label>Nilai semester 3</label>
+            <input type="number" id="s3" min="0" max="100" step="0.01" required>
+          </div>
+
+          <div class="field">
+            <label>Nilai semester 4</label>
+            <input type="number" id="s4" min="0" max="100" step="0.01" required>
+          </div>
+
+          <div class="field">
+            <label>Nilai semester 5</label>
+            <input type="number" id="s5" min="0" max="100" step="0.01" required>
+          </div>
+
+          <div class="field">
+            <label>Peringkat eligible</label>
+            <input type="number" id="peringkat" min="1" placeholder="Contoh: 15">
+          </div>
+
+          <div class="field">
+            <label>Jumlah siswa eligible</label>
+            <input type="number" id="jumlahEligible" min="1" placeholder="Contoh: 100">
+          </div>
+
+          <div class="field">
+            <label>Prestasi</label>
+            <select id="prestasi">
+              <option>Belum ada</option>
+              <option>Sekolah</option>
+              <option>Kabupaten/Kota</option>
+              <option>Provinsi</option>
+              <option>Nasional/Internasional</option>
+            </select>
+          </div>
+
+        </div>
+
+        <h3>Pilihan Perguruan Tinggi</h3>
+
+        <div class="form-grid">
+
+          <div class="field">
+            <label>PTN pilihan 1</label>
+            <input id="kampus1" placeholder="Contoh: UNPAD">
+          </div>
+
+          <div class="field">
+            <label>Jurusan pilihan 1</label>
+            <input id="jurusan1" placeholder="Contoh: Manajemen">
+          </div>
+
+          <div class="field">
+            <label>PTN pilihan 2</label>
+            <input id="kampus2" placeholder="Opsional">
+          </div>
+
+          <div class="field">
+            <label>Jurusan pilihan 2</label>
+            <input id="jurusan2" placeholder="Opsional">
+          </div>
+
+        </div>
+
+        <div class="field">
+          <label>
+            <input type="checkbox" id="izinSimpan" style="width:auto">
+            Saya menyetujui penyimpanan hasil simulasi ini
+            untuk keperluan evaluasi sekolah.
+          </label>
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn">
+          ANALISIS PELUANG SAYA
+        </button>
+
+        <p id="loading" class="loading"></p>
+
+      </form>
+
+      <div id="hasil" class="result"></div>
+
+    </div>
+
+    <p class="note">
+      Hasil merupakan simulasi berdasarkan rata-rata rapor dan
+      informasi yang dimasukkan. Bukan persentase kelulusan resmi.
+      Jangan memasukkan NISN atau data pribadi sensitif.
+    </p>
+
+  </section>
+
+
+  <!-- DATA ALUMNI -->
+  <section id="alumni" class="page">
+
+    <h2>Data Alumni SNBP</h2>
+    <p class="subtitle">
+      Rekap siswa yang diterima pada tiga tahun terakhir.
+    </p>
+
+    <div class="stats">
+      <div class="card">
+        <div class="number">30</div>
+        <div class="small">Tahun 2024</div>
+      </div>
+
+      <div class="card">
+        <div class="number">32</div>
+        <div class="small">Tahun 2025</div>
+      </div>
+
+      <div class="card">
+        <div class="number">20</div>
+        <div class="small">Tahun 2026</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>PTN dengan penerimaan alumni terbanyak</h3>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Perguruan Tinggi</th>
+              <th>Jumlah Alumni</th>
+            </tr>
+          </thead>
+
+          <tbody id="tabelKampus"></tbody>
+        </table>
+      </div>
+
+      <p class="note">
+        Nama kampus dinormalisasi dari variasi penulisan dalam file
+        alumni. Terdapat kampus lain dengan jumlah penerimaan yang
+        sama pada posisi terakhir.
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- EXPLORE PTN -->
+  <section id="kampus" class="page">
+
+    <h2>Explore Perguruan Tinggi Negeri</h2>
+    <p class="subtitle">
+      Kenali kampus, lokasi, bidang studi, dan website resminya.
+    </p>
+
+    <div id="daftarKampus" class="campus-grid">
+      <p>Memuat data kampus...</p>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <b>SNBP CHECK</b>
+  <p>Kenali Peluangmu, Raih Kampus Impianmu.</p>
+  <p>Website Informasi SNBP | SMAN 1 Purwakarta</p>
+</footer>
+
+
+<script>
+
+// NAVIGASI HALAMAN
+function showPage(id, button) {
+
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
+
+  document.querySelectorAll('.menu button').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  document.getElementById(id).classList.add('active');
+
+  if (button) {
+    button.classList.add('active');
+  }
+
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+
+// MEMANGGIL DATA DARI CODE.GS
+function loadData() {
+
+  google.script.run
+    .withSuccessHandler(function(data) {
+
+      document.getElementById('total2024').textContent = data.alumni[2024];
+      document.getElementById('total2025').textContent = data.alumni[2025];
+      document.getElementById('total2026').textContent = data.alumni[2026];
+      document.getElementById('totalSemua').textContent = data.total;
+
+      renderKampus(data.kampus);
+      renderTabel(data.kampus);
+
+    })
+    .withFailureHandler(function(error) {
+      console.error(error);
+      document.getElementById('daftarKampus').textContent =
+        'Data kampus gagal dimuat. Muat ulang website.';
+    })
+    .getDashboardData();
+}
+
+
+// MENAMPILKAN DAFTAR KAMPUS
+function renderKampus(data) {
+
+  const container = document.getElementById('daftarKampus');
+
+  container.innerHTML = data.map(k => {
+
+    const photo = k.foto
+      ? `<img class="campus-photo" src="${escapeHTML(k.foto)}" alt="Foto ${escapeHTML(k.nama)}">`
+      : `<div class="photo-placeholder">${escapeHTML(k.singkatan)}</div>`;
+
+    return `
+      <div class="campus-card">
+        ${photo}
+
+        <div class="campus-info">
+
+          <h3>${escapeHTML(k.nama)}</h3>
+
+          <p>📍 ${escapeHTML(k.lokasi)}</p>
+
+          <p>
+            <b>Bidang studi:</b><br>
+            ${escapeHTML(k.bidang)}
+          </p>
+
+          <p>
+            <b>Alumni diterima:</b>
+            ${k.jumlah} siswa
+          </p>
+
+          <a href="${escapeHTML(k.website)}"
+             target="_blank"
+             rel="noopener">
+             KUNJUNGI WEBSITE RESMI →
+          </a>
+
+        </div>
+      </div>
+    `;
+
+  }).join('');
+
+}
+
+
+// TABEL ALUMNI
+function renderTabel(data) {
+
+  const tbody = document.getElementById('tabelKampus');
+
+  tbody.innerHTML = data.map((k, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${escapeHTML(k.nama)}</td>
+      <td>${k.jumlah} siswa</td>
+    </tr>
+  `).join('');
+
+}
+
+
+// ESCAPE TEKS UNTUK TAMPILAN
+function escapeHTML(value) {
+
+  return String(value).replace(/[&<>"']/g, function(c) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[c];
+  });
+
+}
+
+
+// FORM ANALISIS SNBP
+document.getElementById('formSNBP').addEventListener('submit', function(e) {
+
+  e.preventDefault();
+
+  const data = {
+    tahun: document.getElementById('tahun').value,
+    semester1: document.getElementById('s1').value,
+    semester2: document.getElementById('s2').value,
+    semester3: document.getElementById('s3').value,
+    semester4: document.getElementById('s4').value,
+    semester5: document.getElementById('s5').value,
+    peringkat: document.getElementById('peringkat').value,
+    jumlahEligible: document.getElementById('jumlahEligible').value,
+    pilihan1:
+      document.getElementById('kampus1').value + ' - ' +
+      document.getElementById('jurusan1').value,
+    pilihan2:
+      document.getElementById('kampus2').value + ' - ' +
+      document.getElementById('jurusan2').value
+  };
+
+  const btn = document.getElementById('submitBtn');
+  const loading = document.getElementById('loading');
+  const hasil = document.getElementById('hasil');
+
+  btn.disabled = true;
+  loading.textContent = 'Sedang menganalisis nilai...';
+  hasil.classList.remove('show');
+
+  google.script.run
+
+    .withSuccessHandler(function(result) {
+
+      loading.textContent = '';
+      btn.disabled = false;
+
+      hasil.innerHTML = `
+        <h3>HASIL ANALISIS SNBP</h3>
+
+        <div class="average">${result.rataRata}</div>
+
+        <p><b>Rata-rata nilai rapor</b></p>
+
+        <br>
+
+        <p><b>Kategori:</b> ${escapeHTML(result.kategori)}</p>
+
+        <p>${escapeHTML(result.keterangan)}</p>
+
+        <br>
+
+        <p><b>Posisi eligible:</b> ${escapeHTML(result.posisi)}</p>
+
+        <br>
+
+        <p><b>Pilihan pertama:</b><br>
+        ${escapeHTML(result.pilihan1)}</p>
+
+        <p><b>Pilihan kedua:</b><br>
+        ${escapeHTML(result.pilihan2)}</p>
+
+        <p class="note">
+          Hasil ini merupakan simulasi edukasi, bukan prediksi
+          resmi atau jaminan kelulusan SNBP.
+        </p>
+      `;
+
+      hasil.classList.add('show');
+
+      // SIMPAN JIKA SISWA MEMBERIKAN PERSETUJUAN
+      if (document.getElementById('izinSimpan').checked) {
+
+        google.script.run
+          .withSuccessHandler(function(message) {
+            loading.textContent = message;
+          })
+          .withFailureHandler(function(error) {
+            loading.textContent =
+              'Analisis berhasil, tetapi penyimpanan gagal: ' + error.message;
+          })
+          .savePrediction(data);
+
+      }
+
+    })
+
+    .withFailureHandler(function(error) {
+
+      loading.textContent = 'Terjadi kesalahan: ' + error.message;
+      btn.disabled = false;
+
+    })
+
+    .analyzePrediction(data);
+
+});
+
+
+// JALANKAN SAAT WEBSITE DIBUKA
+window.addEventListener('load', loadData);
+
+</script>
+
+</body>
+</html>
